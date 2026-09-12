@@ -4,12 +4,6 @@ services:
     container_name: campuslab-ms-bookings
     ports:
       - "8081:8081"
-    environment:
-      DB_URL: jdbc:h2:mem:testdb
-      DB_DRIVER: org.h2.Driver
-      DB_USERNAME: sa
-      DB_PASSWORD: password
-      DB_DIALECT: org.hibernate.dialect.H2Dialect
 
   campuslab-bff:
     image: lukmezac/campuslab-bff:latest
