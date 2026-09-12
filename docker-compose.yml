@@ -1,0 +1,16 @@
+services:
+  campuslab-ms-bookings:
+    image: lukmezac/campuslab-ms-bookings:latest
+    container_name: campuslab-ms-bookings
+    ports:
+      - "8081:8081"
+
+  campuslab-bff:
+    image: lukmezac/campuslab-bff:latest
+    container_name: campuslab-bff
+    ports:
+      - "8080:8080"
+    environment:
+      BOOKINGS_SERVICE_URL: http://campuslab-ms-bookings:8081
+    depends_on:
+      - campuslab-ms-bookings
