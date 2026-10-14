@@ -1,9 +1,42 @@
 services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: campuslab-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: campuslab
+      RABBITMQ_DEFAULT_PASS: campuslab123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
   campuslab-ms-bookings:
     image: lukmezac/campuslab-ms-bookings:latest
     container_name: campuslab-ms-bookings
     ports:
       - "8081:8081"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: campuslab
+      RABBITMQ_PASSWORD: campuslab123
+    depends_on:
+      - rabbitmq
+
+  campuslab-ms-rabbit-admin:
+    image: lukmezac/campuslab-ms-rabbit-admin:latest
+    container_name: campuslab-ms-rabbit-admin
+    ports:
+      - "8082:8082"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: campuslab
+      RABBITMQ_PASSWORD: campuslab123
+    depends_on:
+      - rabbitmq
 
   campuslab-bff:
     image: lukmezac/campuslab-bff:latest
@@ -14,3 +47,6 @@ services:
       BOOKINGS_SERVICE_URL: http://campuslab-ms-bookings:8081
     depends_on:
       - campuslab-ms-bookings
+
+volumes:
+  rabbitmq_data:
