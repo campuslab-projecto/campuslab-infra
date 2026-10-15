@@ -38,6 +38,19 @@ services:
     depends_on:
       - rabbitmq
 
+  campuslab-ms-notify:
+    image: lukmezac/campuslab-ms-notify:latest
+    container_name: campuslab-ms-notify
+    ports:
+      - "8083:8083"
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: campuslab
+      RABBITMQ_PASSWORD: campuslab123
+    depends_on:
+      - rabbitmq
+
   campuslab-bff:
     image: lukmezac/campuslab-bff:latest
     container_name: campuslab-bff
