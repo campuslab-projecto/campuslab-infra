@@ -13,29 +13,26 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  # Microservicio de reservas con Kafka habilitado
   campuslab-ms-bookings:
-    image: lukmezac/campuslab-ms-bookings:latest
+    image: campuslab-ms-bookings:ep5-local
     container_name: campuslab-ms-bookings
     ports:
       - "8081:8081"
     environment:
-      # RabbitMQ
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: campuslab
       RABBITMQ_PASSWORD: campuslab123
-
-      # Kafka
       CAMPUSLAB_KAFKA_ENABLED: "true"
       KAFKA_BOOTSTRAP_SERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
-
     depends_on:
       - rabbitmq
-
     networks:
       - default
       - kafka_lab
 
+  # Administracion de RabbitMQ
   campuslab-ms-rabbit-admin:
     image: lukmezac/campuslab-ms-rabbit-admin:latest
     container_name: campuslab-ms-rabbit-admin
@@ -49,6 +46,7 @@ services:
     depends_on:
       - rabbitmq
 
+  # Microservicio de notificaciones
   campuslab-ms-notify:
     image: lukmezac/campuslab-ms-notify:latest
     container_name: campuslab-ms-notify
@@ -62,18 +60,67 @@ services:
     depends_on:
       - rabbitmq
 
+  # Backend For Frontend
   campuslab-bff:
     image: lukmezac/campuslab-bff:latest
     container_name: campuslab-bff
     ports:
       - "8080:8080"
     environment:
-      BOOKINGS_SERVICE_URL: http://campuslab-ms-bookings:8081
+      BOOKINGS_SERVICE_URL: "http://campuslab-ms-bookings:8081"
     depends_on:
       - campuslab-ms-bookings
 
+  # Microservicio de auditoria Kafka
+  campuslab-ms-audit:
+    build:
+      context: ../../ms-campuslab-audi-git
+      dockerfile: Dockerfile
+    container_name: campuslab-ms-audit
+    ports:
+      - "8084:8084"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
+    networks:
+      - default
+      - kafka_lab
+
+  # Microservicio de reportes Kafka
+  campuslab-ms-report:
+    build:
+      context: ../../campuslab-ms-report
+      dockerfile: Dockerfile
+    container_name: campuslab-ms-report
+    ports:
+      - "18087:8085"
+    environment:
+      CAMPUSLAB_KAFKA_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
+      DB_URL: "jdbc:h2:file:/app/data/reportdb"
+    volumes:
+      - report_data:/app/data
+    networks:
+      - default
+      - kafka_lab
+
+  # Microservicio de administracion Kafka
+  campuslab-ms-kafka-admin:
+    build:
+      context: ../../campuslab-ms-kafka-admin
+      dockerfile: Dockerfile
+    container_name: campuslab-ms-kafka-admin
+    ports:
+      - "8086:8086"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
+      KAFKA_ADMIN_API_KEY: "${KAFKA_ADMIN_API_KEY:?Configura la clave administrativa}"
+    networks:
+      - default
+      - kafka_lab
+
 volumes:
   rabbitmq_data:
+  report_data:
 
 networks:
   default:

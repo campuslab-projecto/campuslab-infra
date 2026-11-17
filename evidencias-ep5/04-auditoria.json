@@ -1,0 +1,59 @@
+﻿{
+    "value":  [
+                  {
+                      "eventId":  "3ac01dac-7ab3-4629-b97c-3de9de5d18e1",
+                      "eventType":  "BOOKING_STATUS_CHANGED",
+                      "bookingId":  1,
+                      "status":  "DEVUELTA",
+                      "timestamp":  "2026-11-17T18:15:24.900868",
+                      "id":  6,
+                      "receivedAt":  "2026-11-17T18:15:24.908944"
+                  },
+                  {
+                      "eventId":  "59260a8c-fd1d-4003-8527-49d9581f955d",
+                      "eventType":  "BOOKING_STATUS_CHANGED",
+                      "bookingId":  1,
+                      "status":  "EN_USO",
+                      "timestamp":  "2026-11-17T18:15:22.835578",
+                      "id":  5,
+                      "receivedAt":  "2026-11-17T18:15:22.842663"
+                  },
+                  {
+                      "eventId":  "7deea89e-b490-4f4c-956d-f3a7d7cabfc8",
+                      "eventType":  "BOOKING_STATUS_CHANGED",
+                      "bookingId":  1,
+                      "status":  "EN_PREPARACION",
+                      "timestamp":  "2026-11-17T18:15:20.781218",
+                      "id":  4,
+                      "receivedAt":  "2026-11-17T18:15:20.791026"
+                  },
+                  {
+                      "eventId":  "7a4bae01-e809-42ff-8bff-59cca925a8d6",
+                      "eventType":  "BOOKING_STATUS_CHANGED",
+                      "bookingId":  1,
+                      "status":  "APROBADA",
+                      "timestamp":  "2026-11-17T18:15:18.755588",
+                      "id":  3,
+                      "receivedAt":  "2026-11-17T18:15:18.773851"
+                  },
+                  {
+                      "eventId":  "7dce9a80-d478-42e3-a69a-2c8e07cdc808",
+                      "eventType":  "BOOKING_CREATED",
+                      "bookingId":  1,
+                      "status":  "SOLICITADA",
+                      "timestamp":  "2026-11-17T18:11:13.606805",
+                      "id":  2,
+                      "receivedAt":  "2026-11-17T18:11:14.012277"
+                  },
+                  {
+                      "eventId":  "f36285f5-aa4a-48af-88fc-0b9ea0b2aaa1",
+                      "eventType":  "BOOKING_CREATED",
+                      "bookingId":  3,
+                      "status":  "SOLICITADA",
+                      "timestamp":  "2026-11-17T18:07:07.285345",
+                      "id":  1,
+                      "receivedAt":  "2026-11-17T18:07:07.383532"
+                  }
+              ],
+    "Count":  6
+}
