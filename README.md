@@ -6,7 +6,7 @@ Repositorio de infraestructura y documentación global del sistema CampusLab.
 
 ## Descripción
 
-Este repositorio contiene la configuración necesaria para levantar los servicios backend de CampusLab mediante Docker Compose, utilizando imágenes Docker publicadas para cada microservicio.
+Este repositorio contiene la configuración necesaria para levantar los servicios backend de CampusLab mediante Docker Compose, utilizando tanto imágenes Docker publicadas como compilación local de microservicios desde sus Dockerfiles.
 
 La infraestructura actual permite ejecutar localmente:
 
@@ -15,14 +15,13 @@ La infraestructura actual permite ejecutar localmente:
 - Microservicio de notificaciones.
 - Microservicio administrador de RabbitMQ.
 - RabbitMQ con Management UI.
+- Microservicio de auditoría Kafka.
+- Microservicio de reportería Kafka.
+- Microservicio administrador de Kafka.
 
 También contiene la documentación general de arquitectura, puertos, servicios, integración con AWS RDS y la matriz de funcionalidades del proyecto.
 
-El objetivo es permitir la ejecución de la solución mediante:
-
-```bash
-docker compose up -d
-```
+El objetivo es permitir la ejecución de la solución mediante Docker Compose. En la EP5 se requiere levantar primero el clúster Kafka y configurar las dependencias indicadas en la sección correspondiente.
 
 y mantener la infraestructura preparada para despliegue en AWS.
 
@@ -42,6 +41,7 @@ CampusLab está dividido en repositorios independientes.
 | Microservicio de reportería | `campuslab-ms-report` |
 | Microservicio de auditoría | `campuslab-ms-audit` |
 | Administrador RabbitMQ | `campuslab-ms-rabbit-admin` |
+| Administrador Kafka | `campuslab-ms-kafka-admin` |
 | Infraestructura | `campuslab-infra` |
 
 Organización GitHub:
@@ -53,6 +53,8 @@ https://github.com/campuslab-projecto
 ---
 
 ## Arquitectura general
+
+La siguiente arquitectura corresponde a la etapa previa de CampusLab (EP3). La extensión con Kafka de EP5 se documenta más adelante.
 
 Arquitectura principal del sistema:
 
@@ -108,16 +110,19 @@ Para desarrollo local, `campuslab-ms-bookings` mantiene H2 como configuración p
 
 ## Servicios locales
 
-Actualmente la infraestructura local incluye:
+La infraestructura local de EP5 incluye los siguientes servicios (el clúster Kafka de tres brokers se levanta por separado):
 
 | Servicio | Imagen | Puerto |
 |---|---|---:|
 | campuslab-bff | `lukmezac/campuslab-bff:latest` | 8080 |
-| campuslab-ms-bookings | `lukmezac/campuslab-ms-bookings:latest` | 8081 |
+| campuslab-ms-bookings | `campuslab-ms-bookings:ep5-local` (compilación local) | 8081 |
 | campuslab-ms-rabbit-admin | `lukmezac/campuslab-ms-rabbit-admin:latest` | 8082 |
 | campuslab-ms-notify | `lukmezac/campuslab-ms-notify:latest` | 8083 |
 | RabbitMQ AMQP | `rabbitmq:3-management` | 5672 |
 | RabbitMQ Management | `rabbitmq:3-management` | 15672 |
+| campuslab-ms-audit | Compilación local desde Dockerfile | 8084 |
+| campuslab-ms-report | Compilación local desde Dockerfile | 18087 (interno 8085) |
+| campuslab-ms-kafka-admin | Compilación local desde Dockerfile | 8086 |
 
 ---
 
@@ -129,7 +134,7 @@ Archivo principal:
 docker-compose.yml
 ```
 
-Configuración utilizada:
+Ejemplo histórico de configuración utilizada durante EP3 (no corresponde al Docker Compose actualizado de EP5; la fuente vigente es el archivo `docker-compose.yml` del repositorio):
 
 ```yaml
 services:
@@ -831,11 +836,13 @@ También se controlan errores de validación producidos por Jakarta Validation.
 
 ## Ejecución local
 
-Levantar todos los servicios:
+En EP3, los servicios se levantaban con:
 
 ```bash
 docker compose up -d
 ```
+
+Para EP5 hay que iniciar antes el clúster Kafka y preparar la red externa, los repositorios y el archivo `.env` indicados al final del README.
 
 Comprobar contenedores:
 
@@ -843,7 +850,7 @@ Comprobar contenedores:
 docker ps
 ```
 
-Servicios esperados:
+Servicios esperados en la etapa EP3:
 
 ```text
 campuslab-rabbitmq
@@ -1080,7 +1087,7 @@ La EP3 también incorpora persistencia cloud para reservas mediante PostgreSQL e
 
 ## Despliegue en EC2
 
-En una instancia EC2 con Docker y Git instalados:
+En una instancia EC2 con Docker y Git instalados, durante la etapa anterior se utilizaba:
 
 ```bash
 git clone https://github.com/campuslab-projecto/campuslab-infra.git
@@ -1100,7 +1107,7 @@ La base PostgreSQL de reservas fue validada mediante AWS RDS.
 
 ## Matriz de funcionalidades
 
-La siguiente matriz sistematiza el estado actual del proyecto CampusLab.
+La siguiente matriz resume funcionalidades incorporadas durante EP3 y EP5. Las evidencias de Kafka se detallan en la sección de EP5.
 
 | Funcionalidad | Estado | Componente responsable | Evidencia |
 |---|---|---|---|
@@ -1161,14 +1168,15 @@ La siguiente matriz sistematiza el estado actual del proyecto CampusLab.
 | Validación de bindings | Implementada | `campuslab-ms-rabbit-admin` | DTO + Jakarta Validation |
 | Manejo global de errores | Implementada | `campuslab-ms-rabbit-admin` | `GlobalExceptionHandler` |
 | rabbit-admin compila | Implementada y verificada | `campuslab-ms-rabbit-admin` | Gradle `BUILD SUCCESSFUL` |
-| Docker Compose local | Implementada | `campuslab-infra` | RabbitMQ, bookings, rabbit-admin, notify y BFF |
+| Docker Compose local | Implementada y ampliada en EP5 | `campuslab-infra` | RabbitMQ, bookings, rabbit-admin, notify, BFF, Audit, Report y Kafka Admin |
 | API Gateway | Implementada previamente | AWS / BFF | Endpoint evaluación anterior |
 | AWS RDS PostgreSQL | Implementada y probada | AWS / `campuslab-ms-bookings` | Conexión JDBC y persistencia real |
 | Despliegue RabbitMQ en AWS | No requerido para la validación local realizada | `campuslab-infra` | RabbitMQ probado mediante Docker Compose |
 | Catálogo | Fuera del alcance funcional actual | `campuslab-ms-catalog` | Repositorio reservado sin implementación funcional |
 | Servicio notify independiente | Implementada y probada | `campuslab-ms-notify` | Consumers + ACK/NACK + Docker |
-| Reportería | Fuera del alcance funcional actual | `campuslab-ms-report` | Repositorio reservado sin implementación funcional |
-| Auditoría | Fuera del alcance funcional actual | `campuslab-ms-audit` | Repositorio reservado sin implementación funcional |
+| Reportería Kafka | Implementada y probada en EP5 | `campuslab-ms-report` | Consumo Kafka, indicadores y evidencias en `evidencias-ep5/` |
+| Auditoría Kafka | Implementada y probada en EP5 | `campuslab-ms-audit` | Registro de eventos y cambios de estado de reservas |
+| Administración Kafka | Implementada y probada en EP5 | `campuslab-ms-kafka-admin` | Consulta de tópicos, configuración y validaciones de seguridad |
 
 ---
 
@@ -1516,6 +1524,8 @@ El warning de tamaño del bundle Angular no impide la compilación del proyecto.
 
 ## Estado final EP3
 
+Este apartado conserva el estado alcanzado al cierre de EP3. Las ampliaciones posteriores se detallan en EP5.
+
 La solución CampusLab incluye:
 
 - Frontend Angular.
@@ -1574,3 +1584,217 @@ Integrantes:
 Lukas Meza Cofré
 Christian Sandoval
 ```
+
+
+
+---
+
+# EP5 - Integración de Apache Kafka
+
+## Objetivo
+
+La EP5 incorpora Apache Kafka a CampusLab para procesar eventos de reservas y ocupación, registrar información de auditoría y generar indicadores mediante un microservicio de reportes.
+
+Esta integración complementa la arquitectura RabbitMQ implementada anteriormente, sin reemplazarla.
+
+## Arquitectura de eventos
+
+```text
+MS Bookings
+    |
+    v
+Apache Kafka (3 brokers)
+    |
+    +-- campuslab.booking.events
+    |       |
+    |       +-- MS Audit
+    |       |
+    |       +-- MS Report
+    |
+    +-- campuslab.occupancy.events
+            |
+            +-- MS Report
+```
+
+El microservicio MS Kafka Admin permite consultar y administrar recursos de Kafka mediante una API REST.
+
+## Configuración del clúster
+
+Se utiliza un clúster local de tres brokers:
+
+- kafka1:29092
+- kafka2:29092
+- kafka3:29092
+
+Tópicos principales:
+
+| Tópico | Particiones | Factor de replicación |
+|---|---:|---:|
+| campuslab.booking.events | 3 | 3 |
+| campuslab.occupancy.events | 3 | 3 |
+
+Configuración comprobada:
+
+- min.insync.replicas = 2
+- cleanup.policy = delete
+- retention.ms = 604800000
+
+Durante las pruebas se verificó que las tres réplicas permanecían sincronizadas.
+
+## Eventos implementados
+
+Eventos de reservas:
+
+- BOOKING_CREATED
+- BOOKING_STATUS_CHANGED
+
+Eventos de ocupación:
+
+- OCCUPANCY_STARTED
+- OCCUPANCY_ENDED
+
+Estos eventos permiten registrar las operaciones realizadas sobre las reservas y actualizar los indicadores del sistema.
+
+## Microservicios de EP5
+
+| Microservicio | Puerto local | Responsabilidad |
+|---|---:|---|
+| MS Bookings | 8081 | Publicación de eventos Kafka |
+| MS Audit | 8084 | Historial de auditoría |
+| MS Report | 18087 | Indicadores de reservas y ocupación |
+| MS Kafka Admin | 8086 | Administración de Kafka |
+
+MS Bookings conserva también su integración con RabbitMQ.
+
+## Requisitos de ejecución local
+
+Se requiere Docker Desktop, Docker Compose y los repositorios de los microservicios disponibles localmente.
+
+La estructura local utilizada para validar EP5 es:
+
+```text
+Cloud/
+  campuslab-infra-main/
+    campuslab-infra-main/
+      docker-compose.yml
+      .env
+  campuslab-ms-bookings-git/
+  ms-campuslab-audi-git/
+  campuslab-ms-report/
+  campuslab-ms-kafka-admin/
+  campuslab-kafka-lab/
+```
+
+Las rutas `build.context` del archivo `docker-compose.yml` dependen de esta organización. Si los repositorios se clonan con otros nombres, hay que ajustar las rutas.
+
+Antes de levantar la infraestructura principal, se debe iniciar el clúster Kafka desde su proyecto correspondiente (por ejemplo, ejecutar `docker compose up -d` dentro de `campuslab-kafka-lab/`).
+
+La infraestructura utiliza una red Docker externa denominada:
+
+`campuslab-kafka-lab_default`
+
+## Variables de entorno
+
+MS Bookings utiliza las variables:
+
+- CAMPUSLAB_KAFKA_ENABLED=true
+- KAFKA_BOOTSTRAP_SERVERS=kafka1:29092,kafka2:29092,kafka3:29092
+
+MS Audit, MS Report y MS Kafka Admin también utilizan KAFKA_BOOTSTRAP_SERVERS.
+
+MS Kafka Admin requiere una clave administrativa configurada en el archivo .env:
+
+```dotenv
+KAFKA_ADMIN_API_KEY=REEMPLAZAR_POR_CLAVE_SEGURA
+```
+
+El archivo .env está excluido de Git y no debe publicarse.
+
+## Construcción y ejecución
+
+**Nota:** para una instalación desde cero es necesario clonar también el proyecto `campuslab-kafka-lab` y los repositorios con `build.context`, además de preparar la variable administrativa. La ejecución de este entorno no depende únicamente de clonar `campuslab-infra`.
+
+
+Con el clúster Kafka y su red externa disponibles, desde la carpeta de infraestructura:
+
+```powershell
+docker compose config --quiet
+docker compose build
+docker compose up -d
+docker compose ps
+```
+
+Los microservicios Bookings, Audit, Report y Kafka Admin se construyen utilizando sus Dockerfiles.
+
+La construcción automática de MS Bookings fue validada con Docker Compose.
+
+## Pruebas de integración
+
+Se comprobó:
+
+1. Creación de reservas en MS Bookings.
+2. Publicación de eventos de reservas en Kafka.
+3. Consumo de eventos por MS Audit.
+4. Registro de cambios de estado.
+5. Consumo de eventos por MS Report.
+6. Procesamiento del evento OCCUPANCY_STARTED.
+7. Procesamiento del evento OCCUPANCY_ENDED.
+8. Actualización de los indicadores de reportes.
+
+Durante la validación, el endpoint:
+
+http://localhost:18087/api/report/kpis
+
+devolvió:
+
+```json
+{
+  "totalEventos": 9,
+  "reservasDistintas": 3,
+  "eventosReservas": 7,
+  "eventosOcupacion": 2,
+  "recursosDistintos": 1
+}
+```
+
+Los valores corresponden a las pruebas del entorno local; pueden cambiar después de generar nuevos eventos.
+
+## Validación de Kafka Admin
+
+Se comprobaron respuestas de seguridad y validación:
+
+| Escenario | Resultado |
+|---|---|
+| Solicitud administrativa sin clave | HTTP 403 |
+| Solicitud con clave incorrecta | HTTP 403 |
+| Solicitud con clave correcta | HTTP 200 |
+| Creación de tópico con parámetros inválidos | HTTP 400 |
+
+También se verificaron las operaciones administrativas de consulta y gestión de tópicos.
+
+## Evidencias de EP5
+
+Las evidencias están almacenadas en el directorio:
+
+`evidencias-ep5/`
+
+Archivos:
+
+- 01-servicios.txt
+- 02-topico-reservas.txt
+- 03-topico-ocupacion.txt
+- 04-auditoria.json
+- 05-report-kpis.json
+- 06-grupo-audit.txt
+- 07-grupo-report.txt
+- 08-kafka-admin-topicos.json
+
+## Persistencia y consideraciones
+
+MS Bookings utiliza H2 en memoria por defecto durante la ejecución local. Las reservas se pierden si se recrea el contenedor.
+
+MS Report utiliza una base H2 respaldada por un volumen persistente de Docker.
+
+Las pruebas de EP5 fueron realizadas en un entorno Docker local. No constituyen por sí mismas una validación de despliegue Kafka en AWS.
+
+La mensajería Kafka complementa la integración RabbitMQ documentada en EP3.
