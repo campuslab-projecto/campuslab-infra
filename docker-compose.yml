@@ -1,6 +1,7 @@
 
 services:
 
+  # RabbitMQ
   rabbitmq:
     image: rabbitmq:3-management
     container_name: campuslab-rabbitmq
@@ -15,6 +16,9 @@ services:
 
   # Microservicio de reservas con Kafka habilitado
   campuslab-ms-bookings:
+    build:
+      context: ../../campuslab-ms-bookings-git
+      dockerfile: Dockerfile
     image: campuslab-ms-bookings:ep5-local
     container_name: campuslab-ms-bookings
     ports:
