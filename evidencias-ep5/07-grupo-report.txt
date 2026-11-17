@@ -1,0 +1,8 @@
+﻿
+GROUP                  TOPIC                      PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                            HOST            CLIENT-ID
+campuslab-report-group campuslab.booking.events   2          2               2               0               consumer-campuslab-report-group-1-a8b8cafe-a813-4434-98a1-72882f0249f1 /172.19.0.14    consumer-campuslab-report-group-1
+campuslab-report-group campuslab.booking.events   0          11              11              0               consumer-campuslab-report-group-1-a8b8cafe-a813-4434-98a1-72882f0249f1 /172.19.0.14    consumer-campuslab-report-group-1
+campuslab-report-group campuslab.booking.events   1          -               0               -               consumer-campuslab-report-group-1-a8b8cafe-a813-4434-98a1-72882f0249f1 /172.19.0.14    consumer-campuslab-report-group-1
+campuslab-report-group campuslab.occupancy.events 2          -               0               -               consumer-campuslab-report-group-2-7c12fc88-5f5d-4fcf-9504-149b7b9b3e98 /172.19.0.14    consumer-campuslab-report-group-2
+campuslab-report-group campuslab.occupancy.events 1          2               2               0               consumer-campuslab-report-group-2-7c12fc88-5f5d-4fcf-9504-149b7b9b3e98 /172.19.0.14    consumer-campuslab-report-group-2
+campuslab-report-group campuslab.occupancy.events 0          2               2               0               consumer-campuslab-report-group-2-7c12fc88-5f5d-4fcf-9504-149b7b9b3e98 /172.19.0.14    consumer-campuslab-report-group-2
