@@ -1,3 +1,4 @@
+
 services:
 
   rabbitmq:
@@ -18,12 +19,22 @@ services:
     ports:
       - "8081:8081"
     environment:
+      # RabbitMQ
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: campuslab
       RABBITMQ_PASSWORD: campuslab123
+
+      # Kafka
+      CAMPUSLAB_KAFKA_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka1:29092,kafka2:29092,kafka3:29092"
+
     depends_on:
       - rabbitmq
+
+    networks:
+      - default
+      - kafka_lab
 
   campuslab-ms-rabbit-admin:
     image: lukmezac/campuslab-ms-rabbit-admin:latest
@@ -63,3 +74,10 @@ services:
 
 volumes:
   rabbitmq_data:
+
+networks:
+  default:
+
+  kafka_lab:
+    external: true
+    name: campuslab-kafka-lab_default
