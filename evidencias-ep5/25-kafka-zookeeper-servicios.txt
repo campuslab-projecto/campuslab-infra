@@ -1,0 +1,6 @@
+﻿CONTAINER ID   IMAGE                              COMMAND                  CREATED        STATUS        PORTS                          NAMES
+f9e9a0ddd4dd   provectuslabs/kafka-ui:v0.7.2      "/bin/sh -c 'java --ÔÇª"   28 hours ago   Up 11 hours   127.0.0.1:8088->8080/tcp       campuslab-kafka-lab-kafka-ui-1
+af619693d921   confluentinc/cp-kafka:7.9.11       "/etc/confluent/dockÔÇª"   28 hours ago   Up 11 hours   127.0.0.1:19094->9092/tcp      campuslab-kafka-lab-kafka3-1
+4b2839da431d   confluentinc/cp-kafka:7.9.11       "/etc/confluent/dockÔÇª"   28 hours ago   Up 11 hours   127.0.0.1:19092->9092/tcp      campuslab-kafka-lab-kafka1-1
+9e896d75caaa   confluentinc/cp-kafka:7.9.11       "/etc/confluent/dockÔÇª"   28 hours ago   Up 11 hours   127.0.0.1:19093->9092/tcp      campuslab-kafka-lab-kafka2-1
+2bc439273e7a   confluentinc/cp-zookeeper:7.9.11   "/etc/confluent/dockÔÇª"   28 hours ago   Up 11 hours   2181/tcp, 2888/tcp, 3888/tcp   campuslab-kafka-lab-zookeeper-1
