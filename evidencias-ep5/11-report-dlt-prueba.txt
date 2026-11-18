@@ -1,0 +1,19 @@
+
+2026-11-18T02:07:58.374Z ERROR 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de reserva
+2026-11-18T02:07:59.388Z  INFO 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] fkaConsumerFactory$ExtendedKafkaConsumer : [Consumer clientId=consumer-campuslab-report-ep5-isolated-group-1,
+groupId=campuslab-report-ep5-isolated-group] Seeking to offset 0 for partition campuslab.report.booking.ep5.test-0
+2026-11-18T02:07:59.392Z ERROR 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de reserva
+2026-11-18T02:07:59.534Z ERROR 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de ocupacion
+2026-11-18T02:08:00.492Z  INFO 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] fkaConsumerFactory$ExtendedKafkaConsumer : [Consumer clientId=consumer-campuslab-report-ep5-isolated-group-1,
+groupId=campuslab-report-ep5-isolated-group] Seeking to offset 0 for partition campuslab.report.booking.ep5.test-0
+2026-11-18T02:08:00.495Z ERROR 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de reserva
+2026-11-18T02:08:00.634Z  INFO 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] fkaConsumerFactory$ExtendedKafkaConsumer : [Consumer clientId=consumer-campuslab-report-ep5-isolated-group-2,
+groupId=campuslab-report-ep5-isolated-group] Seeking to offset 0 for partition campuslab.report.occupancy.ep5.test-0
+2026-11-18T02:08:00.637Z ERROR 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de ocupacion
+2026-11-18T02:08:01.639Z  INFO 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] fkaConsumerFactory$ExtendedKafkaConsumer : [Consumer clientId=consumer-campuslab-report-ep5-isolated-group-2,
+groupId=campuslab-report-ep5-isolated-group] Seeking to offset 0 for partition campuslab.report.occupancy.ep5.test-0
+2026-11-18T02:08:01.642Z ERROR 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : JSON invalido en evento de ocupacion
+2026-11-18T02:10:14.393Z  INFO 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] c.d.c.report.service.ReportService       : Evento de reserva almacenado: eventId=report-valid-booking-001, bookingId=999002
+2026-11-18T02:10:14.395Z  INFO 1 --- [campuslab-ms-report] [ntainer#0-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : Evento de reserva procesado: bookingId=999002, eventId=report-valid-booking-001
+2026-11-18T02:10:16.961Z  INFO 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] c.d.c.report.service.ReportService       : Evento de ocupacion almacenado: eventId=report-valid-occupancy-001, resourceId=LAB-EP5-TEST
+2026-11-18T02:10:16.961Z  INFO 1 --- [campuslab-ms-report] [ntainer#1-0-C-1] c.d.c.r.consumer.ReportKafkaConsumer     : Evento de ocupacion procesado: resourceId=LAB-EP5-TEST, eventId=report-valid-occupancy-001

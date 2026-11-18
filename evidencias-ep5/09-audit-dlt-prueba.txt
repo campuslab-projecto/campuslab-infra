@@ -1,0 +1,8 @@
+
+2026-11-17T21:45:17.013Z  INFO 1 --- [ms-campuslab-audit] [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : Record in retry and not yet recovered
+2026-11-17T21:45:18.020Z  INFO 1 --- [ms-campuslab-audit] [ntainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : Record in retry and not yet recovered
+2026-11-17T21:45:18.027Z ERROR 1 --- [ms-campuslab-audit] [ntainer#0-0-C-1] c.d.c.audit.kafka.KafkaErrorConfig       : AUDIT KAFKA: Evento fallido. Topico=campuslab.booking.ep5.test, particion=2, offset=0,
+destino=campuslab.booking.ep5.test.DLT, error=org.springframework.kafka.listener.ListenerExecutionFailedException: Listener method 'public void
+cl.duoc.campuslab.audit.kafka.AuditKafkaConsumer.consume(org.apache.kafka.clients.consumer.ConsumerRecord<java.lang.String, java.lang.String>,org.springframework.kafka.support.Acknowledgment) throws java.lang.Exception' threw
+exception
+2026-11-17T21:46:24.509Z  INFO 1 --- [ms-campuslab-audit] [ntainer#0-0-C-1] c.d.c.audit.kafka.AuditKafkaConsumer     : AUDITORIA KAFKA: Evento BOOKING_CREATED | Reserva 999001 | Particion 0 | Offset 0

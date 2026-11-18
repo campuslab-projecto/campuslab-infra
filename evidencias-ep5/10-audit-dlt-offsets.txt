@@ -1,0 +1,5 @@
+﻿
+GROUP                              TOPIC                      PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                                        HOST            CLIENT-ID
+campuslab-audit-ep5-isolated-group campuslab.booking.ep5.test 0          1               1               0               consumer-campuslab-audit-ep5-isolated-group-1-5ffcc3be-eadd-4705-a079-dc4c72b18419 /172.19.0.5     consumer-campuslab-audit-ep5-isolated-group-1
+campuslab-audit-ep5-isolated-group campuslab.booking.ep5.test 1          -               0               -               consumer-campuslab-audit-ep5-isolated-group-1-5ffcc3be-eadd-4705-a079-dc4c72b18419 /172.19.0.5     consumer-campuslab-audit-ep5-isolated-group-1
+campuslab-audit-ep5-isolated-group campuslab.booking.ep5.test 2          1               1               0               consumer-campuslab-audit-ep5-isolated-group-1-5ffcc3be-eadd-4705-a079-dc4c72b18419 /172.19.0.5     consumer-campuslab-audit-ep5-isolated-group-1
