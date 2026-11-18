@@ -1,0 +1,12 @@
+﻿Listing exchanges for vhost / ...
+name	type	durable
+cmd.direct	direct	true
+	direct	true
+amq.fanout	fanout	true
+cmd.topic	topic	true
+amq.topic	topic	true
+amq.rabbitmq.trace	topic	true
+amq.match	headers	true
+amq.direct	direct	true
+amq.headers	headers	true
+cmd.dead.dlx	direct	true
