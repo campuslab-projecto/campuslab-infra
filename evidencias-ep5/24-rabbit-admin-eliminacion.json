@@ -1,0 +1,8 @@
+﻿{
+    "fecha":  "2026-11-18T00:55:29.0644578-03:00",
+    "cola":  "ep5.demo.queue.verificacion",
+    "colaExiste":  false,
+    "exchange":  "ep5.demo.exchange.verificacion",
+    "exchangeExiste":  false,
+    "bindingExiste":  false
+}

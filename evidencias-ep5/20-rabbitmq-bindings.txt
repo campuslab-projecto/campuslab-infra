@@ -1,0 +1,17 @@
+﻿Listing bindings for vhost /...
+source_name	destination_name	routing_key
+	q.cmd.voucher	q.cmd.voucher
+	q.cmd.prep	q.cmd.prep
+	q.cmd.email.dlq	q.cmd.email.dlq
+	q.cmd.voucher.dlq	q.cmd.voucher.dlq
+	q.cmd.email	q.cmd.email
+	q.cmd.prep.dlq	q.cmd.prep.dlq
+cmd.dead.dlx	q.cmd.email.dlq	q.cmd.email.dlq
+cmd.dead.dlx	q.cmd.prep.dlq	q.cmd.prep.dlq
+cmd.dead.dlx	q.cmd.voucher.dlq	q.cmd.voucher.dlq
+cmd.direct	q.cmd.email	email.send
+cmd.direct	q.cmd.prep	prep.ticket
+cmd.direct	q.cmd.voucher	voucher.gen
+cmd.topic	q.cmd.email	email.*
+cmd.topic	q.cmd.prep	prep.#
+cmd.topic	q.cmd.voucher	voucher.*

@@ -1,0 +1,9 @@
+﻿Timeout: 60.0 seconds ...
+Listing queues for vhost / ...
+name	messages	consumers	arguments
+q.cmd.voucher	0	1	[{"x-dead-letter-exchange","cmd.dead.dlx"},{"x-dead-letter-routing-key","q.cmd.voucher.dlq"}]
+q.cmd.prep	0	1	[{"x-dead-letter-exchange","cmd.dead.dlx"},{"x-dead-letter-routing-key","q.cmd.prep.dlq"}]
+q.cmd.email.dlq	0	0	[]
+q.cmd.voucher.dlq	1	0	[]
+q.cmd.email	0	1	[{"x-dead-letter-exchange","cmd.dead.dlx"},{"x-dead-letter-routing-key","q.cmd.email.dlq"}]
+q.cmd.prep.dlq	0	0	[]
