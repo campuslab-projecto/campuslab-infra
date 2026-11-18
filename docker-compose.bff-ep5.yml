@@ -1,0 +1,5 @@
+services:
+  campuslab-bff:
+    image: campuslab-bff:ep5-local
+    environment:
+      AUDIT_SERVICE_URL: "http://campuslab-ms-audit:8084"
