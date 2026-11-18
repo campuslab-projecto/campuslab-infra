@@ -1,0 +1,32 @@
+﻿[
+    {
+        "ruta":  "/actuator/health",
+        "httpStatus":  200,
+        "autenticado":  false
+    },
+    {
+        "ruta":  "/api/bookings",
+        "httpStatus":  401,
+        "autenticado":  false
+    },
+    {
+        "ruta":  "/api/audit",
+        "httpStatus":  401,
+        "autenticado":  false
+    },
+    {
+        "ruta":  "/api/report",
+        "httpStatus":  401,
+        "autenticado":  false
+    },
+    {
+        "ruta":  "/api/rabbit/queues",
+        "httpStatus":  401,
+        "autenticado":  false
+    },
+    {
+        "ruta":  "/api/kafka/topics",
+        "httpStatus":  401,
+        "autenticado":  false
+    }
+]
