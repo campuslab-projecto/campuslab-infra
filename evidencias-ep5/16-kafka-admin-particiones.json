@@ -1,0 +1,46 @@
+﻿{
+    "name":  "campuslab.demo.ep5-verificacion",
+    "partitionCount":  4,
+    "partitions":  [
+                       {
+                           "partition":  0,
+                           "leader":  2,
+                           "replicas":  [
+                                            2
+                                        ],
+                           "isr":  [
+                                       2
+                                   ]
+                       },
+                       {
+                           "partition":  1,
+                           "leader":  3,
+                           "replicas":  [
+                                            3
+                                        ],
+                           "isr":  [
+                                       3
+                                   ]
+                       },
+                       {
+                           "partition":  2,
+                           "leader":  1,
+                           "replicas":  [
+                                            1
+                                        ],
+                           "isr":  [
+                                       1
+                                   ]
+                       },
+                       {
+                           "partition":  3,
+                           "leader":  2,
+                           "replicas":  [
+                                            2
+                                        ],
+                           "isr":  [
+                                       2
+                                   ]
+                       }
+                   ]
+}

@@ -1,0 +1,8 @@
+﻿{
+    "topic":  "campuslab.demo.ep5-verificacion",
+    "config":  {
+                   "min.insync.replicas":  "1",
+                   "cleanup.policy":  "delete",
+                   "retention.ms":  "86400000"
+               }
+}
