@@ -1,0 +1,12 @@
+﻿{
+    "servicio":  "campuslab-ms-report",
+    "motor":  "H2",
+    "rutaConfigurada":  "/app/data/reportdb",
+    "volumen":  "/app/data",
+    "tipoMontaje":  "volume",
+    "archivos":  [
+                     "total 24K",
+                     "-rw-r--r-- 1 10001 10001 24K Nov 18 04:09 reportdb.mv.db"
+                 ],
+    "fecha":  "2026-11-18T01:09:53.3189129-03:00"
+}
