@@ -1772,6 +1772,32 @@ Se comprobaron respuestas de seguridad y validación:
 
 También se verificaron las operaciones administrativas de consulta y gestión de tópicos.
 
+## Recuperacion de errores con DLT
+
+MS Audit y MS Report cuentan con mecanismos de manejo de errores para eventos Kafka.
+
+Cuando un consumidor recibe un mensaje JSON invalido, se ejecutan reintentos configurados mediante Spring Kafka. Si el mensaje no puede procesarse, se publica en un topico Dead Letter Topic (DLT).
+
+Las pruebas de EP5 comprobaron:
+
+1. Envio de mensajes JSON invalidos a topicos de prueba aislados.
+2. Ejecucion del mecanismo de reintentos.
+3. Recuperacion de mensajes fallidos en sus respectivas DLT.
+4. Procesamiento posterior de eventos validos.
+5. Avance de offsets del grupo consumidor, sin mensajes pendientes en las particiones utilizadas.
+6. Conservacion del funcionamiento de los servicios principales.
+
+Los topicos DLT utilizados en las pruebas cuentan con:
+
+- Tres particiones.
+- Factor de replicacion de tres.
+- min.insync.replicas = 2.
+- Retencion de 14 dias.
+- Politica cleanup.policy = delete.
+
+Las pruebas de MS Report utilizaron un grupo Kafka, topicos y base de datos independientes del servicio principal.
+
+El Report aislado registro dos eventos validos: uno de reserva y uno de ocupacion. El Report principal conservo sus nueve eventos registrados.
 ## Evidencias de EP5
 
 Las evidencias están almacenadas en el directorio:
@@ -1788,6 +1814,12 @@ Archivos:
 - 06-grupo-audit.txt
 - 07-grupo-report.txt
 - 08-kafka-admin-topicos.json
+- 09-audit-dlt-prueba.txt
+- 10-audit-dlt-offsets.txt
+- 11-report-dlt-prueba.txt
+- 12-report-dlt-offsets.txt
+- 13-report-kpis-aislado.json
+- 14-report-kpis-principal.json
 
 ## Persistencia y consideraciones
 
