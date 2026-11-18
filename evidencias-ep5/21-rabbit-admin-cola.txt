@@ -1,4 +1,2 @@
-﻿
+
 ep5.demo.queue.verificacion	true	0
-
-

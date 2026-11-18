@@ -1,4 +1,2 @@
-﻿
+
 ep5.demo.exchange.verificacion	direct	true
-
-
