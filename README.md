@@ -1830,3 +1830,11 @@ MS Report utiliza una base H2 respaldada por un volumen persistente de Docker.
 Las pruebas de EP5 fueron realizadas en un entorno Docker local. No constituyen por sí mismas una validación de despliegue Kafka en AWS.
 
 La mensajería Kafka complementa la integración RabbitMQ documentada en EP3.
+
+---
+
+## Estado actualizado de la Evaluacion Parcial 5
+
+Para consultar la arquitectura verificada en AWS, las pruebas de Kafka y RabbitMQ, los mecanismos DLT y las evidencias de la evaluacion:
+
+[Ver estado verificado de CampusLab EP5](ESTADO_EP5_AWS.md)
