@@ -1,0 +1,30 @@
+﻿services:
+  campuslab-ms-bookings:
+    environment:
+      DB_URL: "${AWS_RDS_JDBC_URL:?Configurar AWS_RDS_JDBC_URL}"
+      DB_DRIVER: "org.postgresql.Driver"
+      DB_USERNAME: "${AWS_RDS_USERNAME:?Configurar AWS_RDS_USERNAME}"
+      DB_PASSWORD: "${AWS_RDS_PASSWORD:?Configurar AWS_RDS_PASSWORD}"
+      DB_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}"
+
+  campuslab-ms-audit:
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+
+  campuslab-ms-report:
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+
+  campuslab-ms-kafka-admin:
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+
+  campuslab-ms-rabbit-admin:
+    environment:
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}"
+
+  campuslab-ms-notify:
+    environment:
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}"

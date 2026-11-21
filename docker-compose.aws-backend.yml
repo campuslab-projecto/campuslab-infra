@@ -1,0 +1,112 @@
+
+name: campuslab-aws-backend
+
+services:
+
+  # ==========================================
+  # BACKEND FOR FRONTEND
+  # ==========================================
+  campuslab-bff:
+    image: campuslab/bff:ep5
+    ports:
+      - "8080:8080"
+    environment:
+      BOOKINGS_SERVICE_URL: "http://campuslab-ms-bookings:8081"
+      AUDIT_SERVICE_URL: "http://campuslab-ms-audit:8084"
+      RABBIT_ADMIN_SERVICE_URL: "http://campuslab-ms-rabbit-admin:8082"
+      KAFKA_ADMIN_SERVICE_URL: "http://campuslab-ms-kafka-admin:8086"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "${AWS_ENTRA_ISSUER_URI:?Configurar AWS_ENTRA_ISSUER_URI}"
+      CAMPUSLAB_SECURITY_AUDIENCE: "${AWS_ENTRA_AUDIENCE:?Configurar AWS_ENTRA_AUDIENCE}"
+    depends_on:
+      - campuslab-ms-bookings
+
+  # ==========================================
+  # MICROSERVICIO DE RESERVAS
+  # ==========================================
+  campuslab-ms-bookings:
+    image: campuslab/bookings:ep5-candidate
+    ports:
+      - "127.0.0.1:8081:8081"
+    environment:
+      DB_URL: "${AWS_RDS_JDBC_URL:?Configurar AWS_RDS_JDBC_URL}"
+      DB_DRIVER: "org.postgresql.Driver"
+      DB_USERNAME: "${AWS_RDS_USERNAME:?Configurar AWS_RDS_USERNAME}"
+      DB_PASSWORD: "${AWS_RDS_PASSWORD:?Configurar AWS_RDS_PASSWORD}"
+      DB_DIALECT: "org.hibernate.dialect.PostgreSQLDialect"
+      CAMPUSLAB_KAFKA_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP}"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "${AWS_RABBITMQ_USERNAME:?Configurar AWS_RABBITMQ_USERNAME}"
+      RABBITMQ_PASSWORD: "${AWS_RABBITMQ_PASSWORD:?Configurar AWS_RABBITMQ_PASSWORD}"
+
+  # ==========================================
+  # MICROSERVICIO DE AUDITORIA
+  # ==========================================
+  campuslab-ms-audit:
+    image: campuslab/audit:ep5
+    ports:
+      - "127.0.0.1:8084:8084"
+    volumes:
+      - audit_data:/app/data
+    environment:
+      DB_URL: "jdbc:h2:file:/app/data/campuslab-audit"
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+
+  # ==========================================
+  # MICROSERVICIO DE REPORTES
+  # ==========================================
+  campuslab-ms-report:
+    image: campuslab/report:ep5
+    ports:
+      - "127.0.0.1:18087:8085"
+    environment:
+      CAMPUSLAB_KAFKA_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+      DB_URL: "jdbc:h2:file:/app/data/reportdb"
+    volumes:
+      - report_data:/app/data
+
+  # ==========================================
+  # MICROSERVICIO KAFKA ADMIN
+  # ==========================================
+  campuslab-ms-kafka-admin:
+    image: campuslab/kafka-admin:ep5
+    ports:
+      - "127.0.0.1:8086:8086"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}:19092,${AWS_KAFKA_PRIVATE_IP}:19093,${AWS_KAFKA_PRIVATE_IP}:19094"
+      KAFKA_ADMIN_API_KEY: "${KAFKA_ADMIN_API_KEY:?Configurar KAFKA_ADMIN_API_KEY}"
+
+  # ==========================================
+  # MICROSERVICIO DE NOTIFICACIONES
+  # ==========================================
+  campuslab-ms-notify:
+    image: campuslab/notify:ep5-candidate
+    ports:
+      - "127.0.0.1:8083:8083"
+    environment:
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "${AWS_RABBITMQ_USERNAME:?Configurar AWS_RABBITMQ_USERNAME}"
+      RABBITMQ_PASSWORD: "${AWS_RABBITMQ_PASSWORD:?Configurar AWS_RABBITMQ_PASSWORD}"
+
+  # ==========================================
+  # MICROSERVICIO RABBIT ADMIN
+  # ==========================================
+  campuslab-ms-rabbit-admin:
+    image: campuslab/rabbit-admin:ep5-candidate
+    ports:
+      - "127.0.0.1:8082:8082"
+    environment:
+      RABBITMQ_HOST: "${AWS_KAFKA_PRIVATE_IP:?Configurar AWS_KAFKA_PRIVATE_IP}"
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: "${AWS_RABBITMQ_USERNAME:?Configurar AWS_RABBITMQ_USERNAME}"
+      RABBITMQ_PASSWORD: "${AWS_RABBITMQ_PASSWORD:?Configurar AWS_RABBITMQ_PASSWORD}"
+
+# ==========================================
+# VOLUMENES PERSISTENTES
+# ==========================================
+volumes:
+  report_data:
+  audit_data:
